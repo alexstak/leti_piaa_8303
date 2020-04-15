@@ -9,19 +9,10 @@ class Cycle
     std::string first_string;
     std::string second_string;
 public:
-    Cycle()
-    {
-        std::cin >> first_string;
-        std::cin >> second_string;
-        std::vector <int> tmp(second_string.length());
-        ind_lenghts = tmp;
-        tmp.clear();
-    }
-
-
-
+    Cycle(){}
     void prefix_func()
     {
+        //std::cout << "Value function prefix: 0 ";
         for (size_t i=1; i<second_string.length(); ++i)
             {
                // ищем, какой префикс можно расширить
@@ -30,19 +21,26 @@ public:
                     j = ind_lenghts[j-1];   //уменьшаем значение префикса
 
                 if (second_string[i] == second_string[j])
-                    ++j;  //расширяем найденный префикс
+                    ++j;  //расширяем найденный префик
                 ind_lenghts[i] = j;
+                //std::cout << j << ' ';
              }
+        //std::cout << '\n';
     }
 
     void cycle()
     {
+        std::cin >> first_string;
+        std::cin >> second_string;
+
         if(first_string.length() != second_string.length())//если длины строк не равны - выход
         {
             //std::cout << "Non-equel lengths: " << first_string.length() << "!=" << second_string.length() << '\n';
             std::cout << -1;
             return;
         }
+        std::vector <int> tmp(second_string.length());
+        ind_lenghts = tmp;
         this->prefix_func();// вычисление префикс функции для second_string
         int laps = 0;
         for (int ind_f = 0, ind_s = 0;;)
@@ -78,18 +76,12 @@ public:
         std::cout << -1;
     }
 
-    ~Cycle()
-    {
-        ind_lenghts.clear();
-        first_string.clear();
-        second_string.clear();
-    }
+    ~Cycle(){}
 };
 
 
 int main()
 {
-    Cycle* tmp = new Cycle();
-    tmp->cycle();
-    delete tmp;
+    Cycle tmp;
+    tmp.cycle();
 }

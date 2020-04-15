@@ -8,37 +8,38 @@ class SubStr
     std::vector <int> ind_lenghts;
     std::string input_string;
 public:
-    SubStr()
-    {
-        std::cin >> input_string;
-        std::vector <int> tmp(input_string.length());
-        ind_lenghts = tmp;
-    }
+    SubStr(){}
     void prefix_func()
     {
-
+        std::cout << "Value function prefix: 0 ";
         for (size_t i=1; i<input_string.length(); ++i)
             {
-               //ищем, какой префикс-суффикс можно расширить
+                //ищем, какой префикс можно расширить
                 size_t j = ind_lenghts[i-1]; //длина предыдущего префикса, может быть нулевой
-                while ((j > 0) && (input_string[i] != input_string[j])) //если нельзя расширить,
+                while ((j > 0) && (input_string[i] != input_string[j])) //если нельзя расширить
                     j = ind_lenghts[j-1];   //уменьшаем значение префикса
 
                 if (input_string[i] == input_string[j])
-                    ++j;  //расширяем найденный префикc
+                    ++j;  // расширяем найденный префикс
                 ind_lenghts[i] = j;
+                std::cout << j << ' ';
+
              }
+        std::cout << '\n';
 
     }
     void KMP()
     {
+        std::cin >> input_string;
+        std::vector <int> tmp(input_string.length());//инициализируем нулями вектор длин префиксов
+        ind_lenghts = tmp;
         char c;
         int j = 0;
         int i = 0;
         bool no_one_digit = false;
         prefix_func();//считается префикс функция для образца
         std::cin >> c;
-        while(!std::cin.fail())//пока возможно считать символ
+        while(!std::cin.fail() && c != '!')//пока возможно считать символ
         {
             if(input_string[j] == c)//соответсвие найдено
             {
@@ -73,19 +74,14 @@ public:
             std::cout << -1;
     }
 
-    ~SubStr()
-    {
-        ind_lenghts.clear();
-        input_string.clear();
-    }
+    ~SubStr(){}
 };
 
 
 int main()
 {
-    SubStr* tmp = new SubStr();
-    tmp->KMP();
-    delete tmp;
+    SubStr tmp;
+    tmp.KMP();
 }
 
 /*
