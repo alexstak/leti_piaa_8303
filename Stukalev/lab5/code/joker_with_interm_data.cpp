@@ -20,14 +20,14 @@ struct BohrVrtx
 class Bohr
 {
     std::vector <BohrVrtx> bohrTree; // бор
-    std::string text;
-    std::string stringwithjoker;
     std::vector <int> match; //вектор для запоминания вхождения подстрок в текст
     std::vector <std::string> substrings; //  контейнер с подстроками
     int stringNum; // общее количество подстрок
     int currcount; // текущее количество обработанных подстрок
     char joker;
 public:
+    std::string text;
+    std::string stringwithjoker;
     std::vector <int> jokerpositions;//контейнер с позициями подстрок в исходной строке
     Bohr():stringNum(0), currcount(0)
     {
@@ -245,7 +245,7 @@ public:
                                 match[letter_position + 1 - jokerpositions[bohrTree[tmp].number[j] - 1] - bohrTree[tmp].deep]++;
                                 std::cout << "Substring founded on position: " << letter_position + 1 - jokerpositions[bohrTree[tmp].number[j] - 1] - bohrTree[tmp].deep << '\n';
                                 std::cout << "Count of patterns on this index is " <<match[letter_position + 1 - jokerpositions[bohrTree[tmp].number[j] - 1] - bohrTree[tmp].deep];
-                                std::cout << " of of the necessary " << stringNum << '\n';
+                                std::cout << " of the necessary " << stringNum << '\n';
                     }
                 }
             }
@@ -324,6 +324,8 @@ int main()
         return 0;
     }
     tmp->init_bohr();
+    if(tmp->text.length() < tmp->stringwithjoker.length())
+        return 0;
     tmp->Aho();
     tmp->print_result();
 
