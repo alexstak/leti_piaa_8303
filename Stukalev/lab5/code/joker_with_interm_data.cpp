@@ -94,7 +94,7 @@ public:
                           << ") added to string number " << stringNum + 1
                           << '\n';
                 tmp.push_back(stringwithjoker[i]);
-                if (i == stringwithjoker.size() - 1)// случай, когда джокер последний символ строки с джокерами
+                if (i == stringwithjoker.size() - 1)// случай, когда последний символ строки с джокерами
                 {
                     substrings.push_back(tmp); //запоминание подстроки
                     jokerpositions.push_back(i - tmp.size() + 1); //запоминание позиции подстроки в строке с джокерами
@@ -125,7 +125,7 @@ public:
                 std::cout << "Added new vertex in tree: " <<  bohrTree[index].next_v[str[i]] << '\n';
             }
             index = bohrTree[index].next_v[str[i]];
-            std::cout << "Transition to vertex by symbol: " << str[i] << ")\n";
+            std::cout << "Transition to vertex by symbol: " << str[i] << "\n";
         }
         if(str.length() > 0)
         {
@@ -133,7 +133,7 @@ public:
 
             bohrTree[index].number.push_back(++currcount);// запоминаие номера текущей строки
             bohrTree[index].isEnd = true;//помечаем терминальную вершину
-            std::cout << "\nNew terminal vertex added: " << currSymb << ")\n";
+            std::cout << "\nNew terminal vertex added: " << currSymb << "\n";
             std::cout << "-----------------------------------------------------\n";
         }
 
@@ -193,6 +193,8 @@ public:
             if (bohrTree[index].next_v.find(symb) != bohrTree[index].next_v.end())// если переход по текущему символу существует в боре
             {
                 bohrTree[index].auto_movement[symb] = bohrTree[index].next_v[symb];// добавляем этот переход
+                //std::cout << "Go to vertex: " << bohrTree[index].auto_movement[symb] << " ,using symbol: " <<  symb << "\n"
+                          //<< "Transition added\n";
             }
             else
             {
@@ -220,9 +222,9 @@ public:
         int curr = 0;
         for (int i = 0; i < text.size(); i++)
         {
+            std::cout << "Current symbol: " << text[i] << '(' << i << ")\n";
             curr = get_auto_movement(curr, text[i]);
             check_for_substring(curr,i);
-            std::cout << "Current symbol: " << text[i] << '(' << i << ")\n";
 
         }
         std::cout << "End of search\n";
@@ -238,26 +240,38 @@ public:
                 for (int j = 0; j < bohrTree[tmp].number.size(); j++)
                 {
                     if (letter_position + 1 - jokerpositions[bohrTree[tmp].number[j] - 1] - bohrTree[tmp].deep >= 0 &&
-                                letter_position + 1 - jokerpositions[bohrTree[tmp].number[j] - 1] - bohrTree[tmp].deep <= text.size() - stringwithjoker.length())//проверка не выходит ли шаблон за ограничения
+                                letter_position + 1 - jokerpositions[bohrTree[tmp].number[j] - 1] - bohrTree[tmp].deep <= text.size() - stringwithjoker.length())
                     {
-                                match[letter_position + 1 - jokerpositions[bohrTree[tmp].number[j] - 1] - bohrTree[tmp].deep]++;//помечаем вхождение подшаблона
+                                match[letter_position + 1 - jokerpositions[bohrTree[tmp].number[j] - 1] - bohrTree[tmp].deep]++;
                                 std::cout << "Substring founded on position: " << letter_position + 1 - jokerpositions[bohrTree[tmp].number[j] - 1] - bohrTree[tmp].deep << '\n';
+                                std::cout << "Count of patterns on this index is " <<match[letter_position + 1 - jokerpositions[bohrTree[tmp].number[j] - 1] - bohrTree[tmp].deep];
+                                std::cout << " of of the necessary " << stringNum << '\n';
                     }
                 }
             }
         }
-	}
+    }
 
     void print_result()
     {
-        std::cout << "Result of programm:\n";
+        std::cout << "The resulting array of substrings in the text\n";
         std::vector <int> stringforedit(text.size());
+        for (int i = 0; i < text.size(); i++)
+        {
+            std::cout << text[i] << " ";
+        }
+        std::cout << '\n';
         for (int i = 0; i < match.size(); i++)
         {
-            //std::cout << match[i] << " ";
+            std::cout << match[i] << " ";
+        }
+        std::cout << "\nResult of programm:\nSearch for index equal to number of templates started\n";
+        for (int i = 0; i < match.size(); i++)
+        {
+            std::cout << match[i] << "[" << i << "] == " << stringNum <<"?\n";
             if(match[i] == stringNum)
             {
-                std::cout << i + 1 << "\n";
+                std::cout<< "index is " <<i + 1 << "\n";
                 for(int j = 0; j < stringwithjoker.length(); j++)//помечаем все символы строки в тексте
                     stringforedit[i + j]++;
             }
@@ -333,10 +347,15 @@ A$$A$
 $
 
 CACTANCAAGAC
-A$$A$
+A$A$
 $
 
 ACTANCAACATAA
-AC$
+$A$
 $
+
+ACTANCA
+A$$A$
+$
+
  */

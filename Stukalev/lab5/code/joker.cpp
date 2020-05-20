@@ -6,9 +6,9 @@
 
 struct BohrVrtx
 {
-    std::map<char, int> next_v; // массив, необходимый для переходов по рёбрам в боре.
-    std::map<char, int> auto_movement; //массив, необходимый для переходов в автомате
-    std::vector<int> number; // номер обработанной подстроки
+    std::map<char, int> next_v; // контейнер, необходимый для переходов по рёбрам в боре.
+    std::map<char, int> auto_movement; //контейнер, необходимый для переходов в автомате
+    std::vector<int> number; // контейнер с номер обработанной подстроки
     int parent; //индекс родителя
     int suff_link = -1; //индекс перехода по суффиксальной ссылке
     int goodsufflink = -1; //индекс перехода по хорошей суффиксальной ссылке
@@ -198,7 +198,7 @@ public:
             {
                 if(index == 0)
                 {
-                    std::cout << "Suffix link leads to root!\n";
+                    //std::cout << "Suffix link leads to root!\n";
                     bohrTree[index].auto_movement[symb] = 0;
                     //std::cout << "Go to vertex: " << bohrTree[index].auto_movement[symb] << " ,using symbol: " <<  symb << "\n"
                               //<< "Transition added\n";
@@ -237,15 +237,16 @@ public:
             {
                 for (int j = 0; j < bohrTree[tmp].number.size(); j++)
                 {
-                    int tmp = letter_position + 1 - jokerpositions[bohrTree[tmp].number[j] - 1] - bohrTree[tmp].deep;
-                    if (tmp >= 0 && tmp <= text.size() - stringwithjoker.length()) //проверка не выходит ли шаблон за ограничения
+                    if (letter_position + 1 - jokerpositions[bohrTree[tmp].number[j] - 1] - bohrTree[tmp].deep >= 0 &&
+                                letter_position + 1 - jokerpositions[bohrTree[tmp].number[j] - 1] - bohrTree[tmp].deep <= text.size() - stringwithjoker.length())//проверка не выходит ли шаблон за ограничения
                     {
-                        match[tmp]++;//помечаем вхождение подстроки
+                                match[letter_position + 1 - jokerpositions[bohrTree[tmp].number[j] - 1] - bohrTree[tmp].deep]++;//помечаем вхождение подшаблона
+                                //std::cout << "Substring founded on position: " << letter_position + 1 - jokerpositions[bohrTree[tmp].number[j] - 1] - bohrTree[tmp].deep << '\n';
                     }
                 }
             }
         }
-    }
+	}
 
     void print_result()
     {
